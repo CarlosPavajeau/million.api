@@ -1,4 +1,7 @@
+using MediatR;
+using Million.Api.Extensions.DependencyInjection;
 using Serilog;
+using Shared.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,10 +11,12 @@ Log.Logger = new LoggerConfiguration()
     .CreateLogger();
 builder.Host.UseSerilog();
 
+builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddMediatR(AssemblyHelper.GetInstance(Assemblies.Million)).AddMediatR(typeof(Program).Assembly);
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddRouting(route => route.LowercaseUrls = true);
 
 var app = builder.Build();
 
