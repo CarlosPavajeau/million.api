@@ -1,4 +1,4 @@
-﻿namespace Million.Domain;
+﻿namespace Million.Categories.Domain;
 
 public class Category
 {
@@ -10,13 +10,14 @@ public class Category
     [Key] public int Id { get; set; }
 
 
-    [Required] [MaxLength(50)] public string Name { get; set; }
+    [Required] [MaxLength(50)] public string Name { get; set; } = default!;
     [Required] public int Difficulty { get; set; }
 
-    public static Category Create(int difficulty)
+    public static Category Create(string name, int difficulty)
     {
         return new Category
         {
+            Name = name,
             Difficulty = difficulty
         };
     }

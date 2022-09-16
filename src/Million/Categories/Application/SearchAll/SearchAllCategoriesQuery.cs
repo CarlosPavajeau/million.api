@@ -1,5 +1,3 @@
-﻿using MediatR;
-
-namespace Million.Application.SearchAll;
+﻿namespace Million.Categories.Application.SearchAll;
 
 public record SearchAllCategoriesQuery : IRequest<IEnumerable<CategoryResponse>>;

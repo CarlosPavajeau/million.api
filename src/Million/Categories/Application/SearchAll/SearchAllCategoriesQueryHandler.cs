@@ -1,7 +1,6 @@
-﻿using MediatR;
-using Million.Domain;
+﻿using Million.Categories.Domain;
 
-namespace Million.Application.SearchAll;
+namespace Million.Categories.Application.SearchAll;
 
 public class SearchAllCategoriesQueryHandler : IRequestHandler<SearchAllCategoriesQuery, IEnumerable<CategoryResponse>>
 {

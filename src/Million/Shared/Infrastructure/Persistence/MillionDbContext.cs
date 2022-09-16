@@ -1,6 +1,6 @@
-﻿using Million.Domain;
+﻿using Million.Categories.Domain;
 
-namespace Million.Infrastructure.Persistence;
+namespace Million.Shared.Infrastructure.Persistence;
 
 public class MillionDbContext : DbContext
 {

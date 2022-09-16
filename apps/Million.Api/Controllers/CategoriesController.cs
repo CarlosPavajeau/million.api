@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using Million.Application.SearchAll;
+using Million.Categories.Application.SearchAll;
 
 namespace Million.Api.Controllers;
 
