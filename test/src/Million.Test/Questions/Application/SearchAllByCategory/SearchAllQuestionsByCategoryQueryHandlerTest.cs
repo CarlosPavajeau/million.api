@@ -13,7 +13,7 @@ public class SearchAllQuestionsByCategoryQueryHandlerTest
     public SearchAllQuestionsByCategoryQueryHandlerTest()
     {
         var dbContextOptions = new DbContextOptionsBuilder<MillionDbContext>()
-            .UseInMemoryDatabase("test")
+            .UseInMemoryDatabase(Guid.NewGuid().ToString())
             .Options;
         _context = new MillionDbContext(dbContextOptions);
 
@@ -57,5 +57,8 @@ public class SearchAllQuestionsByCategoryQueryHandlerTest
         // Assert
         result.Should().NotBeNull()
             .And.HaveCount(2);
+        
+        // Cleanup
+        await _context.Database.EnsureDeletedAsync();
     }
 }
