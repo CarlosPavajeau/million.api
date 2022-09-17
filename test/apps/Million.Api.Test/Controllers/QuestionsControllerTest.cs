@@ -40,5 +40,43 @@ public class QuestionsControllerTest : ApplicationContextTestCase
         // Assert
         questions.Should().HaveCount(1);
         questions.First().Answers.Should().HaveCount(4);
+        
+        // Cleanup
+        dbContext.Questions.Remove(question);
+        await dbContext.SaveChangesAsync();
+    }
+
+    [Fact]
+    public async Task ValidateAnswer()
+    {
+        // Arrange
+        var question = QuestionMother.Random(1);
+        var dbContext = GetDbContext();
+        await dbContext.Questions.AddAsync(question);
+        await dbContext.SaveChangesAsync();
+
+        // Act
+        var response = await Client.GetAsync($"/api/questions/validate/{question.Answers.First().Id}");
+        response.EnsureSuccessStatusCode();
+
+        var responseString = await response.Content.ReadAsStringAsync();
+        var answer = JsonConvert.DeserializeObject<bool>(responseString);
+
+        // Assert
+        answer.Should().BeFalse();
+        
+        // Act
+        response = await Client.GetAsync($"/api/questions/validate/{question.Answers.First(x => x.IsCorrect).Id}");
+        response.EnsureSuccessStatusCode();
+        
+        responseString = await response.Content.ReadAsStringAsync();
+        answer = JsonConvert.DeserializeObject<bool>(responseString);
+        
+        // Assert
+        answer.Should().BeTrue();
+
+        // Cleanup
+        dbContext.Questions.Remove(question);
+        await dbContext.SaveChangesAsync();
     }
 }
