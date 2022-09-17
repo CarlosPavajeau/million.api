@@ -3,7 +3,7 @@ using Million.Categories.Application.SearchAll;
 using Million.Shared.Infrastructure.Persistence;
 using Million.Test.Categories.Domain;
 
-namespace Million.Test.Categories.Application;
+namespace Million.Test.Categories.Application.SearchAll;
 
 public class SearchAllCategoriesQueryHandlerTest
 {
@@ -13,7 +13,7 @@ public class SearchAllCategoriesQueryHandlerTest
     public SearchAllCategoriesQueryHandlerTest()
     {
         var dbContextOptions = new DbContextOptionsBuilder<MillionDbContext>()
-            .UseInMemoryDatabase("test")
+            .UseInMemoryDatabase(Guid.NewGuid().ToString())
             .Options;
         _context = new MillionDbContext(dbContextOptions);
 
