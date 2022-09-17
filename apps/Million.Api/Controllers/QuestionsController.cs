@@ -14,7 +14,7 @@ public class QuestionsController : ControllerBase
         _mediator = mediator;
     }
 
-    [HttpGet("{category}")]
+    [HttpGet("{category:int}")]
     public async Task<IActionResult> GetQuestions(int category)
     {
         var questions = await _mediator.Send(new SearchAllQuestionsByCategoryQuery(category));
