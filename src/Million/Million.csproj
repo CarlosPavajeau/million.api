@@ -16,7 +16,6 @@
 
     <ItemGroup>
       <Folder Include="Categories" />
-      <Folder Include="Questions\Application" />
       <Folder Include="Shared" />
     </ItemGroup>
 
