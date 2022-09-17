@@ -20,13 +20,13 @@ public class Answer
     [ForeignKey("QuestionId")] public Question Question { get; set; } = default!;
     public int QuestionId { get; set; }
 
-    public static Answer Create(string content, bool isCorrect, int questionId)
+    public static Answer Create(string content, bool isCorrect, Question question)
     {
         return new Answer
         {
             Content = content,
             IsCorrect = isCorrect,
-            QuestionId = questionId
+            Question = question
         };
     }
 }

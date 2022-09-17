@@ -31,27 +31,29 @@ public class SearchAllQuestionsByCategoryQueryHandlerTest
         // Act
         var query = new SearchAllQuestionsByCategoryQuery(1);
         var result = await _handler.Handle(query, CancellationToken.None);
+        result = result.ToList();
 
         // Assert
         result.Should().NotBeNull()
             .And.HaveCount(1);
-        
+        result.First().Answers.Should().HaveCount(4);
+
         // Arrange
         _context.Questions.Add(QuestionMother.Random(2));
         _context.Questions.Add(QuestionMother.Random(2));
         await _context.SaveChangesAsync();
-        
+
         // Act
         result = await _handler.Handle(query, CancellationToken.None);
-        
+
         // Assert
         result.Should().NotBeNull()
             .And.HaveCount(1);
-        
+
         // Act
         query = new SearchAllQuestionsByCategoryQuery(2);
         result = await _handler.Handle(query, CancellationToken.None);
-        
+
         // Assert
         result.Should().NotBeNull()
             .And.HaveCount(2);

@@ -27,7 +27,7 @@ public class Question
 
     [ForeignKey("CategoryId")] public Category Category { get; set; } = default!;
 
-    public ICollection<Answer> Answers { get; set; }
+    public ICollection<Answer> Answers { get; set; } = new List<Answer>();
 
 
     public static Question Create(string content, float reward, int categoryId)

@@ -1,4 +1,5 @@
-﻿using Million.Questions.Domain;
+﻿using Mapster;
+using Million.Questions.Domain;
 
 namespace Million.Questions.Application.SearchAllByCategory;
 
@@ -19,10 +20,11 @@ public sealed class
         CancellationToken cancellationToken)
     {
         return await _context.Set<Question>()
+            .Include(x => x.Answers)
             .Where(x => x.CategoryId == request.CategoryId)
             .OrderBy(r => Guid.NewGuid())
             .Take(MaxQuestionsPerCategory)
-            .Select(x => new QuestionResponse(x.Content, x.Reward))
+            .Select(x => x.Adapt<QuestionResponse>())
             .ToListAsync(cancellationToken);
     }
 }
