@@ -1,4 +1,5 @@
 ﻿using Million.Api.Test.Shared;
+using Million.Categories.Application;
 using Million.Categories.Domain;
 using Million.Test.Categories.Domain;
 using Newtonsoft.Json;
@@ -19,7 +20,7 @@ public class CategoriesControllerTest : ApplicationContextTestCase
         response.EnsureSuccessStatusCode();
 
         var responseString = await response.Content.ReadAsStringAsync();
-        var categories = JsonConvert.DeserializeObject<List<Category>>(responseString);
+        var categories = JsonConvert.DeserializeObject<List<CategoryResponse>>(responseString);
 
         // Assert
         categories.Should().BeEmpty();
@@ -35,9 +36,73 @@ public class CategoriesControllerTest : ApplicationContextTestCase
         response.EnsureSuccessStatusCode();
 
         responseString = await response.Content.ReadAsStringAsync();
-        categories = JsonConvert.DeserializeObject<List<Category>>(responseString);
+        categories = JsonConvert.DeserializeObject<List<CategoryResponse>>(responseString);
 
         // Assert
         categories.Should().HaveCount(1);
+    }
+
+    [Fact]
+    public async Task GetFirst()
+    {
+        // Arrange
+        var categories = new List<Category>
+        {
+            CategoryMother.Random(),
+            CategoryMother.Random(),
+            CategoryMother.Random()
+        };
+        var dbContext = GetDbContext();
+        await dbContext.Categories.AddRangeAsync(categories);
+        await dbContext.SaveChangesAsync();
+        
+        var lowestDifficult = categories.Min(c => c.Difficulty);
+        
+        // Act
+        var response = await Client.GetAsync("/api/categories/first");
+        response.EnsureSuccessStatusCode();
+        
+        // Assert
+        var responseString = await response.Content.ReadAsStringAsync();
+        var category = JsonConvert.DeserializeObject<CategoryResponse>(responseString);
+        
+        category.Should().NotBeNull();
+        category.Difficulty.Should().Be(lowestDifficult);
+        
+        // Cleanup
+        dbContext.Categories.RemoveRange(categories);
+        await dbContext.SaveChangesAsync();
+    }
+
+    [Fact]
+    public async Task GetNext()
+    {
+        // Arrange
+        var categories = new List<Category>
+        {
+            CategoryMother.Random(),
+            CategoryMother.Random(),
+            CategoryMother.Random()
+        };
+        var dbContext = GetDbContext();
+        await dbContext.Categories.AddRangeAsync(categories);
+        await dbContext.SaveChangesAsync();
+        
+        var lowestDifficult = categories.Min(c => c.Difficulty);
+        
+        // Act
+        var response = await Client.GetAsync($"/api/categories/next/{lowestDifficult}");
+        response.EnsureSuccessStatusCode();
+        
+        // Assert
+        var responseString = await response.Content.ReadAsStringAsync();
+        var category = JsonConvert.DeserializeObject<CategoryResponse>(responseString);
+        
+        category.Should().NotBeNull();
+        category.Difficulty.Should().BeGreaterThan(lowestDifficult);
+        
+        // Cleanup
+        dbContext.Categories.RemoveRange(categories);
+        await dbContext.SaveChangesAsync();
     }
 }
