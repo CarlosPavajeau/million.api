@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Million.Infrastructure.Persistence;
+using Million.Shared.Infrastructure.Persistence;
 
 namespace Million.Api.Extensions.DependencyInjection;
 
