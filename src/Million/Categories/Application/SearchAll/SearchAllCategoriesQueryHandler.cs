@@ -1,4 +1,5 @@
-﻿using Million.Categories.Domain;
+﻿using Mapster;
+using Million.Categories.Domain;
 
 namespace Million.Categories.Application.SearchAll;
 
@@ -15,7 +16,7 @@ public class SearchAllCategoriesQueryHandler : IRequestHandler<SearchAllCategori
         CancellationToken cancellationToken)
     {
         return await _context.Set<Category>()
-            .Select(x => new CategoryResponse(x.Name, x.Difficulty))
+            .Select(x => x.Adapt<CategoryResponse>())
             .ToListAsync(cancellationToken);
     }
 }
