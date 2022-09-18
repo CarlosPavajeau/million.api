@@ -41,6 +41,10 @@ public class CategoriesControllerTest : ApplicationContextTestCase
 
         // Assert
         categories.Should().HaveCount(1);
+        
+        // Cleanup
+        dbContext.Categories.Remove(category);
+        await dbContext.SaveChangesAsync();
     }
 
     [Fact]
