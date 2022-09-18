@@ -8,7 +8,7 @@ namespace Million.Questions.Domain;
 /// </summary>
 public class Question
 {
-    private Question()
+    public Question()
     {
         // Ef core
     }
