@@ -16,14 +16,15 @@ public class CreateQuestionCommandHandler : IRequestHandler<CreateQuestionComman
     {
         if (request.Answers.Count > 4)
         {
-            throw new InvalidOperationException("A question can have more than 4 answers");
+            throw new InvalidOperationException("A question can't have more than 4 answers");
+        }
+        
+        if (request.Answers.Count(x => x.IsCorrect) > 1)
+        {
+            throw new InvalidOperationException("A question can't have more than 1 correct answer");
         }
 
         var question = request.Adapt<Question>();
-        foreach (var answer in question.Answers)
-        {
-            answer.Question = question;
-        }
 
         await _context.AddAsync(question, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
