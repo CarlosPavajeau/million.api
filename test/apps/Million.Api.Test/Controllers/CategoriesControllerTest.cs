@@ -1,4 +1,5 @@
-﻿using Million.Api.Test.Shared;
+﻿using System.Net;
+using Million.Api.Test.Shared;
 using Million.Categories.Application;
 using Million.Categories.Domain;
 using Million.Test.Categories.Domain;
@@ -100,6 +101,12 @@ public class CategoriesControllerTest : ApplicationContextTestCase
         
         category.Should().NotBeNull();
         category.Difficulty.Should().BeGreaterThan(lowestDifficult);
+        
+        // Act
+        response = await Client.GetAsync($"/api/categories/next/{int.MaxValue}");
+
+        // Assert - 404
+        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         
         // Cleanup
         dbContext.Categories.RemoveRange(categories);

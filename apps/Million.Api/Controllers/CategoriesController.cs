@@ -31,11 +31,16 @@ public class CategoriesController : ControllerBase
 
         return Ok(category);
     }
-    
+
     [HttpGet("next/{difficult:int}")]
     public async Task<IActionResult> GetNext(int difficult)
     {
         var category = await _mediator.Send(new FindNextCategoryQuery(difficult));
+
+        if (category is null)
+        {
+            return NotFound();
+        }
 
         return Ok(category);
     }
