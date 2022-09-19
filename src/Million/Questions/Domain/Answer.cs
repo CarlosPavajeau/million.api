@@ -7,7 +7,7 @@ namespace Million.Questions.Domain;
 /// </summary>
 public class Answer
 {
-    private Answer()
+    public Answer()
     {
         // EF Core
     }

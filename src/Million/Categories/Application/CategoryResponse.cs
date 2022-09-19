@@ -1,3 +1,3 @@
 ﻿namespace Million.Categories.Application;
 
-public record CategoryResponse(string Name, int Difficulty);
+public record CategoryResponse(int Id, string Name, int Difficulty);

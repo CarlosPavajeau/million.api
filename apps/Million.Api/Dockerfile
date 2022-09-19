@@ -5,10 +5,15 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["apps/Million.Api/Million.Api.csproj", "Million.Api/"]
+
+COPY "apps/Million.Api/Million.Api.csproj" "apps/Million.Api/Million.Api.csproj"
+COPY "src/Million/Million.csproj" "src/Million/Million.csproj"
+COPY "src/Shared/Shared.csproj" "src/Shared/Shared.csproj"
+
 RUN dotnet restore "apps/Million.Api/Million.Api.csproj"
+
 COPY . .
-WORKDIR "/src/Million.Api"
+WORKDIR "/src/apps/Million.Api"
 RUN dotnet build "Million.Api.csproj" -c Release -o /app/build
 
 FROM build AS publish

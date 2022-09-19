@@ -18,6 +18,19 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddRouting(route => route.LowercaseUrls = true);
 
+// Configure cors
+const string policy = "AllowAll";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(policy, policyBuilder =>
+    {
+        policyBuilder
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -28,6 +41,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(policy);
 
 app.UseAuthorization();
 
