@@ -11,6 +11,7 @@ public class MillionDbContext : DbContext
 
     public DbSet<Category> Categories { get; set; } = default!;
     public DbSet<Question> Questions { get; set; } = default!;
+    public DbSet<Score.Domain.Score> Scores { get; set; } = default!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
